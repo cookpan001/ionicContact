@@ -1,15 +1,18 @@
 <ion-view view-title="Account">
   <ion-content>
     <div class="row">
-        <a class="item item-avatar" href="#">
-          <img src="img/ionic.png">
-          <h2>My Account Info</h2>
-        </a>
+        <div class="col">
+          <a class="item item-avatar" href="#">
+            <img src="{{userInfo.avatar_large}}">
+            <h2>{{userInfo.screen_name}}</h2>
+            <h2>{{userInfo.location}}</h2>
+          </a>
+        </div>
     </div>
     <div class="row">
         <div class="col">
-            <a ng-click="vdiskLogin()" href="#"><img src="img/weipan48x48.png"></a>
-            <p>微盘登录</p>
+            <a ng-click="weipanLogin()" href="#"><img src="img/weipan48x48.png"></a>
+            <h5>微盘登录</h5>
         </div>
     </div>
   </ion-content>
