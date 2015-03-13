@@ -14,8 +14,60 @@ angular.module('starter.controllers', [])
     console.log($stateParams.id);
 })
 
-.controller('AccountCtrl', function($scope) {
-  $scope.settings = {
-    enableFriends: true
+.controller('AccountCtrl', function($rootScope, $scope, $cordovaInAppBrowser, $cordovaDevice, $http) {
+  $scope.loiginError = false;
+  $scope.accessTokenInfo = {};
+  $scope.userInfo = {};
+  var options = {
+    location: 'no',
+    clearcache: 'no'
+  };
+  if($cordovaDevice.getPlatform() == "iOS"){
+    options['toolbar'] = 'yes';
+    options['closebuttoncaption'] = 'Back';
+  }else if($cordovaDevice.getPlatform() == "Android"){
+
+  }
+  $scope.vdiskLogin = function(){
+    var authorizeApi = "https://auth.sina.com.cn/oauth2/authorize";
+    var callback = "http://pzhu001.sinaapp.com/access_token";
+    var display = 'mobile';
+    var appId = 1849463086;
+    $cordovaInAppBrowser.open(authorizeApi + '?redirect_uri='+callback+'&response_type=code&client_id='+appId+'&display='+display, '_blank', options);
+    $rootScope.$on('$cordovaInAppBrowser:loadstart', function(e, event){
+      var url = event.url;
+      if(url.indexOf(callback) === 0){
+        $cordovaInAppBrowser.close();
+        $http.get(url)
+        .success(function(data) {
+            $scope.accessTokenInfo = JSON.parse(data);
+            console.log(data);
+        })
+        .error(function(data, status) {
+            console.log("ERROR: " + JSON.stringify(data));
+        });
+      }
+      console.log("loadstart: "+JSON.stringify(e));
+    });
+    $rootScope.$on('$cordovaInAppBrowser:loadstop', function(e, event){
+      console.log("loadstop: "+JSON.stringify(event));
+    });
+    $rootScope.$on('$cordovaInAppBrowser:loaderror', function(e, event){
+      $scope.loiginError = true;
+    });
+    $rootScope.$on('$cordovaInAppBrowser:exit', function(e, event){
+      console.log("exit:" + JSON.stringify(event));
+    });
+  };
+  $scope.accountInfo = function(){
+    $cordovaInAppBrowser.close();
+    $http.get(url)
+    .success(function(data) {
+        $scope.accessTokenInfo = JSON.parse(data);
+        console.log(data);
+    })
+    .error(function(data, status) {
+        console.log("ERROR: " + JSON.stringify(data));
+    });
   };
 });

@@ -1,9 +1,16 @@
 <ion-view view-title="Account">
   <ion-content>
-    <ion-list>
-    <ion-toggle  ng-model="settings.enableFriends">
-        Enable Friends
-    </ion-toggle>
-    </ion-list>
+    <div class="row">
+        <a class="item item-avatar" href="#">
+          <img src="img/ionic.png">
+          <h2>My Account Info</h2>
+        </a>
+    </div>
+    <div class="row">
+        <div class="col">
+            <a ng-click="vdiskLogin()" href="#"><img src="img/weipan48x48.png"></a>
+            <p>微盘登录</p>
+        </div>
+    </div>
   </ion-content>
 </ion-view>
