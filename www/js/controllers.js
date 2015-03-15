@@ -14,19 +14,39 @@ angular.module('starter.controllers', [])
     console.log($stateParams.id);
 })
 
-.controller('AccountCtrl', function($rootScope, $scope, $http) {
+.controller('AccountCtrl', function($rootScope, $scope, $ionicModal, $http) {
   $scope.loiginError = false;
   $scope.userInfo = {};
-
+  $scope.isLogin = false;
+  $scope.showLogin = true;
   var authorizeApi = "https://auth.sina.com.cn/oauth2/authorize";
   var callback = "http://pzhu001.sinaapp.com/access_token";
   var display = 'mobile';
   var appId = 1849463086;
-  
+
+  $ionicModal.fromTemplateUrl('weipan-login-modal.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.modal = modal
+  })
+
+  $scope.openModal = function() {
+    $scope.modal.show()
+  }
+
+  $scope.closeModal = function() {
+    $scope.modal.hide();
+  };
+
+  $scope.$on('$destroy', function() {
+    $scope.modal.remove();
+  });
+
   $scope.weipanLogin = function(){
+    $scope.showLogin = false;
     var ref = window.open(authorizeApi+'?redirect_uri='+callback+'&response_type=code&client_id='+appId+'&display='+display, '_blank', 'location=no');
     ref.addEventListener('loadstart', function(event) {
-        //console.log(JSON.stringify(event));
         if((event.url).indexOf(callback) === 0) {
             ref.close();
             ref = null;
@@ -43,17 +63,15 @@ angular.module('starter.controllers', [])
     }, false);
   };
   $scope.accountInfo = function(){
-    console.log("1");
     if($scope.accessTokenInfo['access_token'] == null){
       return 0;
     }
-    console.log("2");
     var url = "http://api.weipan.cn/2/account/info?access_token="+$scope.accessTokenInfo['access_token'];
-    console.log(url);
     $http.get(url)
     .success(function(data) {
         $scope.userInfo = angular.fromJson(data);
         console.log($scope.userInfo);
+        $scope.isLogin = true;
     })
     .error(function(data, status) {
         console.log("ERROR: " + angular.toJson(data));
