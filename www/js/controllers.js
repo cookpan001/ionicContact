@@ -14,16 +14,48 @@ angular.module('starter.controllers', [])
     console.log($stateParams.id);
 })
 
-.controller('AccountCtrl', function($rootScope, $scope, $ionicModal, $http) {
+.controller('AccountCtrl', function($scope, $ionicModal, $http, $window, Weipan) {
   $scope.loiginError = false;
   $scope.userInfo = {};
   $scope.isLogin = false;
   $scope.showLogin = true;
-  var authorizeApi = "https://auth.sina.com.cn/oauth2/authorize";
-  var callback = "http://pzhu001.sinaapp.com/access_token";
-  var display = 'mobile';
-  var appId = 1849463086;
-
+  //delete $window.localStorage['weipanAccessToken'];
+  if($window.localStorage.hasOwnProperty('weipanAccessToken')){
+    $scope.showLogin = false;
+    Weipan.user_info(function(data){
+      console.log(data);
+      var result = angular.fromJson(data);
+      if(result.hasOwnProperty('error_code')){
+        $scope.weipanLogin();
+      }else{
+        $scope.userInfo = angular.fromJson(result);
+        $scope.isLogin = true;
+      }
+    });
+  }
+  $scope.weipanLogin = function(){
+    $scope.showLogin = false;
+    var ref = window.open(Weipan.authorizeApi+'?redirect_uri='+Weipan.callback+'&response_type=code&client_id='+Weipan.appId+'&display='+Weipan.display, '_blank', 'location=no');
+    ref.addEventListener('loadstart', function(event) {
+        if((event.url).indexOf(Weipan.callback) === 0) {
+            ref.close();
+            ref = null;
+            $http.get(event.url+"1")
+            .success(function(data) {
+                Weipan.set_access_token(angular.fromJson(data));
+                Weipan.user_info(function(userInfo){
+                  console.log(userInfo);
+                  $scope.userInfo = angular.fromJson(userInfo);
+                  $scope.isLogin = true;
+                });
+            })
+            .error(function(data, status) {
+                console.log("ERROR: " + JSON.stringify(data));
+            });
+        }
+    }, false);
+  };
+  //Modal
   $ionicModal.fromTemplateUrl('weipan-login-modal.html', {
     scope: $scope,
     animation: 'slide-in-up'
@@ -42,39 +74,4 @@ angular.module('starter.controllers', [])
   $scope.$on('$destroy', function() {
     $scope.modal.remove();
   });
-
-  $scope.weipanLogin = function(){
-    $scope.showLogin = false;
-    var ref = window.open(authorizeApi+'?redirect_uri='+callback+'&response_type=code&client_id='+appId+'&display='+display, '_blank', 'location=no');
-    ref.addEventListener('loadstart', function(event) {
-        if((event.url).indexOf(callback) === 0) {
-            ref.close();
-            ref = null;
-            $http.get(event.url+"1")
-            .success(function(data) {
-                $scope.accessTokenInfo = angular.fromJson(data);
-                console.log($scope.accessTokenInfo);
-                $scope.accountInfo();
-            })
-            .error(function(data, status) {
-                console.log("ERROR: " + JSON.stringify(data));
-            });
-        }
-    }, false);
-  };
-  $scope.accountInfo = function(){
-    if($scope.accessTokenInfo['access_token'] == null){
-      return 0;
-    }
-    var url = "http://api.weipan.cn/2/account/info?access_token="+$scope.accessTokenInfo['access_token'];
-    $http.get(url)
-    .success(function(data) {
-        $scope.userInfo = angular.fromJson(data);
-        console.log($scope.userInfo);
-        $scope.isLogin = true;
-    })
-    .error(function(data, status) {
-        console.log("ERROR: " + angular.toJson(data));
-    });
-  };
 });

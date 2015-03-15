@@ -1,9 +1,9 @@
 <ion-view>
   <ion-nav-title>
-      <h1 class="title">Account</h1>
-      <div class="buttons">
-        <button class="button icon ion-settings button-clear"></button>
-      </div>
+    <h1 class="title">Account</h1>
+    <div class="buttons">
+      <button class="button icon ion-settings button-clear"></button>
+    </div>
   </ion-nav-title>
   <ion-content>
     <div class="row" ng-show="isLogin">
@@ -17,8 +17,12 @@
     </div>
     <div class="row" ng-show="showLogin">
         <div class="col">
-            <a ng-click="weipanLogin()" href="#"><img src="img/weipan48x48.png"></a>
-            <h5 ng-click="openModal()">微盘登录</h5>
+            <a ng-click="openModal()" href="#">
+              <img src="img/weipan32x32.png" style="border-radius: 25px; margin-top: 25px;" />
+            </a>
+            <a ng-click="weipanLogin()" href="#">
+              <img src="img/weipan32x160.png" style="border-radius: 5px; margin-top: 25px;" />
+            </a>
         </div>
     </div>
   </ion-content>

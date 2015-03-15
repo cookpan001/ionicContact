@@ -1,28 +1,29 @@
 angular.module('starter.services', ['ngCordova'])
-.factory('Weipan', ['$http', function($http){
-  var access_token = '';
+.factory('Weipan', ['$http', '$window', function($http, $window){
+  var accessTokenInfo = angular.fromJson($window.localStorage['weipanAccessToken']) || {};
   return {
     appId: 1849463086,
     authorizeApi: "https://auth.sina.com.cn/oauth2/authorize",
     callback: "http://pzhu001.sinaapp.com/access_token",
     display: "mobile",
     //API
-    apiHost: "http://api.weipan.cn",
+    apiHost: "http://api.weipan.cn/",
     accountInfo: "2/account/info",
-    request_url: function(api){
-      return apiHost + "/" + api;
-    },
-    set_access_token: function(token){
-      access_token = token;
+    set_access_token: function(tokenInfo){
+      console.log(tokenInfo);
+      accessTokenInfo = tokenInfo;
+      $window.localStorage['weipanAccessToken'] = angular.toJson(tokenInfo);
     },
     user_info: function(func){
-      var url = request_url(accountInfo);
-      $http(url)
+      var url =  "http://api.weipan.cn/2/account/info?access_token=" + accessTokenInfo['access_token'];
+      console.log(url);
+      $http.get(url)
       .success(function(data){
         func(data);
       })
       .error(function(data, status){
-        console.log("ERROR: " + status + "," + angular.toJson(data));
+        console.log("ERROR: " + status + "," + data);
+        func(data);
       });
     }
   };
