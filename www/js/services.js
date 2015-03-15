@@ -25,6 +25,32 @@ angular.module('starter.services', ['ngCordova'])
         console.log("ERROR: " + status + "," + data);
         func(data);
       });
+    },
+    files: function(){
+
+    },
+    files_post: function(){
+
+    },
+    files_put: function(){
+
+    },
+    //weibo api
+    weibo: function(api, param, method, func){
+      var url = "http://api.weipan.cn/weibo/" + api + "?access_token=" + accessTokenInfo['access_token'];
+      var req = {
+        "method": method, 
+        "url": url,
+        "data": param
+      };
+      $http(req)
+      .success(function(data){
+        func(data);
+      })
+      .error(function(data, status){
+        console.log("ERROR: " + status + "," + data);
+        func(data);
+      });
     }
   };
 }])

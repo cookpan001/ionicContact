@@ -19,7 +19,6 @@ angular.module('starter.controllers', [])
   $scope.userInfo = {};
   $scope.isLogin = false;
   $scope.showLogin = true;
-  //delete $window.localStorage['weipanAccessToken'];
   if($window.localStorage.hasOwnProperty('weipanAccessToken')){
     $scope.showLogin = false;
     Weipan.user_info(function(data){
