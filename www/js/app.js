@@ -57,6 +57,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     }
   })
+  .state('tab.articles', {
+    url: '/articles',
+    views: {
+      'tab-articles': {
+        templateUrl: 'templates/tab-articles.html',
+        controller: 'ArticleCtrl'
+      }
+    }
+  })
   .state('tab.contact-detail', {
     url: '/contacts/:id',
     views: {
@@ -84,7 +93,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     }
   })
-
+  .state('tab.location', {
+    url: '/location',
+    views: {
+      'tab-location': {
+        templateUrl: 'templates/tab-location.html',
+        controller: 'LocationCtrl'
+      }
+    }
+  })
   .state('tab.account', {
     url: '/account',
     views: {

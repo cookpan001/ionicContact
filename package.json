@@ -16,6 +16,7 @@
   },
   "cordovaPlugins": [
     "org.apache.cordova.contacts",
-    "org.apache.cordova.inappbrowser"
+    "org.apache.cordova.inappbrowser",
+    "org.apache.cordova.geolocation"
   ]
 }
