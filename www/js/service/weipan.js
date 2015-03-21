@@ -39,14 +39,35 @@ app.factory('Weipan', ['$http', '$window', '$rootScope', '$localstorage', functi
       console.log(url );
       return $http.get(url);
     },
-    files: function(){
-
+    get_contacts: function(){
+      var file_name = "contacts_"+accessTokenInfo['uid']+".json";
+      var url = "http://api.weipan.cn/2/files/basic/"+file_name+"?access_token="+accessTokenInfo['access_token'];
+      console.log(url);
+      $http.get(url)
+      .success(function(data){
+        console.log("get contacts", angular.toJson(data));
+      })
+      .error(function(data, status){
+        console.log(status+":"+angular.toJson(data));
+      });
     },
-    files_post: function(){
-
-    },
-    files_put: function(){
-
+    files_post: function(data){
+      var file_name = "contacts_"+accessTokenInfo['uid']+".json";
+      var url =  "http://upload-vdisk.sina.com.cn/2/files/basic/"+file_name+"?access_token=" + accessTokenInfo['access_token'];
+      console.log(url);
+      var fd = new FormData();
+      var file = new Blob([data], {type: 'application/json'});
+      fd.append('file', file, file_name);
+      $http.post(url, fd, {
+          transformRequest: angular.identity,
+          headers: {'Content-Type': undefined}
+      })
+      .success(function(data){
+        console.log("upload contacts success");
+      })
+      .error(function(data,status){
+        console.log("upload contacts failed: " + status + ":" + data);
+      });
     },
     //weibo api
     weibo: function(api, param, method, func){

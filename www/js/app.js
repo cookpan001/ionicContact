@@ -89,6 +89,10 @@ app.run(function($ionicPlatform) {
         templateUrl: 'templates/tab-location.html',
         controller: 'LocationCtrl'
       }
+    },
+    onEnter: function($ionicNavBarDelegate){
+      $ionicNavBarDelegate.showBar(false);
+      console.log("enter map");
     }
   })
   .state('tab.account', {
@@ -102,6 +106,6 @@ app.run(function($ionicPlatform) {
   });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/location');
+  $urlRouterProvider.otherwise('/tab/account');
 
 });

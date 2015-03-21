@@ -3,6 +3,7 @@ app.controller('AccountCtrl', function($rootScope, $scope, $ionicModal, $http, $
   $scope.isLogin = false;
   $scope.showLogin = true;
   $scope.syncContacts = true;
+  $scope.syncLocation = true;
   $rootScope.$on("weipan:refresh_token_failed", function(){
     console.log("weipan refresh token failed");
     $scope.weipanLogin();
