@@ -5,6 +5,8 @@ app.controller('MapController', function($scope, $cordovaGeolocation) {
     map.addControl(new BMap.ZoomControl());
     var scaleControl=new BMap.ScaleControl();
     map.addControl(scaleControl);
+    var marker = new BMap.Marker(new BMap.Point(116.693686, 39.877192));// 创建标注      
+    map.addOverlay(marker);
     map.addEventListener("click", function(e){      
         console.log(e.point.lng + ", " + e.point.lat);      
     });

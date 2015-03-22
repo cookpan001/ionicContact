@@ -4,7 +4,10 @@
   The FriendsCtrl pulls data from the Friends service (service.js)
   The Friends service returns an array of friend data
 -->
-<ion-view view-title="{{contact.name.formatted}}">
+<ion-view>
+  <ion-nav-title>
+    <h1 class="title">{{contact.name.formatted}}</h1>
+  </ion-nav-title>
   <ion-content class="padding">
     <ion-list>
       <ion-item ng-repeat="phone in contact.phoneNumbers">
