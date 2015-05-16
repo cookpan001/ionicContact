@@ -1,8 +1,8 @@
 <!-- <div id="l-map" ng-controller="MapController"></div> -->
-
-<ion-view>
-  <ion-nav-title>
-    <h1 class="title">Location</h1>
-  </ion-nav-title>
-  <baidumap style="height: 100%;"></baidumap>
-</ion-view>
+<div class="list list-inset" style="margin: 0 auto;">
+<label class="item item-input">
+    <i class="icon ion-search placeholder-icon"></i>
+    <input type="text" placeholder="Search" ng-model="address">
+  </label>
+</div>
+<baidumap location="address"></baidumap>

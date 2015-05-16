@@ -1,12 +1,12 @@
-app.directive('baidumap', function(){
+app.directive('baidumap', ['$timeout', function($timeout){
     return {
         restrict: "E",
         replace: true,
         transclude: true,
         scope: {
-
+            location: '='
         },
-        template: '<div id="l-map"></div>',
+        templateUrl: 'templates/baidu-map.html',
         link: function($scope, $element, $attrs) {
             console.log("link");
             var map = new BMap.Map("l-map");
@@ -20,6 +20,19 @@ app.directive('baidumap', function(){
             map.addEventListener("click", function(e){      
                 console.log(e.point.lng + ", " + e.point.lat);      
             });
+            var local = new BMap.LocalSearch(map, {
+                renderOptions:{map: map}
+            });
+            var watchTimer;
+            $scope.$watch('location', function(location) {
+                if (watchTimer){
+                    $timeout.cancel(watchTimer);
+                }
+                watchTimer = $timeout(function () {
+                    console.log("location: "+ location);
+                    local.search(location);
+                }, 1500);
+            });
         }
     };
-})
+}])

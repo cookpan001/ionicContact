@@ -1,5 +1,5 @@
 app.controller('LocationCtrl', function($scope, $cordovaGeolocation, $ionicNavBarDelegate) {
-  $scope.name = 'haha';
+  $scope.location = "";
   $ionicNavBarDelegate.showBar(false);
   var posOptions = {timeout: 10000, enableHighAccuracy: false};
   $cordovaGeolocation

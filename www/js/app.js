@@ -91,7 +91,7 @@ app.run(function($ionicPlatform) {
       }
     },
     onEnter: function($ionicNavBarDelegate){
-      //$ionicNavBarDelegate.showBar(false);
+      $ionicNavBarDelegate.showBar(false);
       console.log("enter map");
     }
   })
