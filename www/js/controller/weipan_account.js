@@ -54,7 +54,7 @@ app.controller('AccountCtrl', function($rootScope, $scope, $ionicModal, $http, $
     $scope.getWeipanAccountInfo();
   }
   //Modal
-  $ionicModal.fromTemplateUrl('weipan-login-modal.html', {
+  $ionicModal.fromTemplateUrl('templates/login.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function(modal) {
